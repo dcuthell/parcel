@@ -16,12 +16,12 @@ public class App {
     public static void main(String[] args) {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Welcome to the Shipping Store!");
-        System.out.println(df.format(Double.valueOf(7.625)));
         ArrayList<Parcel> allParcels = new ArrayList<Parcel>();
         boolean programRunning = true;
 
         while(programRunning){
             System.out.println("Please select from the following options: Add Parcel, Ship Order, or Exit");
+            System.out.println("Orders over $50 receive 10% off!");
 
             try{
 
@@ -47,6 +47,10 @@ public class App {
 
                     allParcels.add(someParcel);
                 }else if(navChoice.equals("Ship Order")){
+                    if(allParcels.isEmpty()){
+                        System.out.println("Order is Empty!");
+                        continue;
+                    }
                     System.out.println("Please Choose a Shipping Speed: Standard or Express");
                     String speed = bufferedReader.readLine();
                     System.out.println("Please enter a distance in miles");
@@ -64,7 +68,17 @@ public class App {
                         System.out.println("Your package that is " + oneParcel.width + "x" + oneParcel.length + "x" + oneParcel.height + " , weighs " + oneParcel.weight + "lbs, and " + isWrapped + " will cost $" + df.format(Double.valueOf(thisCost)));
                         System.out.println("------------------");
                     }
+                    if(totalCost > 50.0){
+                        System.out.println("You qualify for 10% off!");
+                        totalCost *= .9;
+                    }
                     System.out.println("Your total shipping cost is: $" + df.format(Double.valueOf(totalCost)));
+                    System.out.println("Would you like to complete the order? - Y or N");
+                    String yOrN = bufferedReader.readLine();
+                    if(yOrN.equals("Y") || yOrN.equals("y")){
+                        allParcels.clear();
+                        System.out.println("Order complete, thank you!");
+                    }
                 }else if(navChoice.equals("Exit")){
                     System.out.println("Farewell Friend!");
                     programRunning = false;
